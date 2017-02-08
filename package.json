@@ -1,0 +1,40 @@
+{
+  "name": "lrm-esri",
+  "version": "1.0.0-beta.1",
+  "description": "an Esri route provider for Leaflet Routing Machine",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -t browserify-shim src/* > dist/lrm-esri.js",
+    "start-watch": "watch \"npm run build\" src",
+    "start": "npm run start-watch & http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgravois/lrm-esri.git"
+  },
+  "keywords": [
+    "esri",
+    "routing",
+    "leaflet",
+    "esri-leaflet"
+  ],
+  "author": "john gravois",
+  "license": "Apache-2.0",
+  "browserify-shim": {
+    "leaflet": "global:L",
+    "leaflet-routing-machine": "global:Routing"
+  },
+  "bugs": {
+    "url": "https://github.com/jgravois/lrm-esri/issues"
+  },
+  "homepage": "https://github.com/jgravois/lrm-esri#readme",
+  "devDependencies": {
+    "browserify": "^14.0.0",
+    "browserify-shim": "^3.8.13",
+    "watch": "^1.0.1"
+  },
+  "dependencies": {
+    "corslite": "0.0.7"
+  }
+}
