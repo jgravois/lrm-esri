@@ -2,7 +2,7 @@ var clientID = 'GflUDcee80ykvalv';
 var accessToken;
 var callbacks = [];
 var protocol = window.location.protocol;
-var callbackPage = protocol + '//johngravois.com/examples/oauth/callback.html';
+var callbackPage = protocol + '//johngravois.com/lrm-esri/examples/oauth/callback.html';
 
 var authPane = document.getElementById('auth');
 var signInButton = document.getElementById('sign-in');
