@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Leaflet OAuth2 Routing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.5/dist/leaflet-routing-machine.css" />
+    <style>
+    html { font-family: sans-serif; font-size: 11pt; }
+    .map { position: fixed; top: 0; left: 0; right: 0; bottom: 0; }
+
+    .results {
+        background-color: white;
+        opacity: 0.8;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 320px;
+        height: 480px;
+        overflow-y: scroll;
+    }
+
+    #auth {
+      position: absolute;
+      top: 200px;
+      right: 50%;
+      z-index: 1000;
+      background: white;
+      padding: 1em;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+      border-radius: 4px;
+    }
+
+    #auth input {
+      display: inline-block;
+      border: 1px solid #999;
+      font-size: 14px;
+      border-radius: 4px;
+      height: 28px;
+      line-height: 28px;
+    }
+    </style>
+</head>
+<body>
+    <div id="map" class="map"></div>
+    <div id="auth">
+      <a href="#" id="sign-in">Sign In</a>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.5"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder@1.5.4"></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+
+    <script src="../../dist/lrm-esri.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,10 +1,14 @@
+/* to do:
+make a GIF
+why doesnt map load until OAuth user signs in?
+doc parameters in a table
+round response geometry to 5 decimal places
+*/
 (function() {
 	'use strict';
 
 	var L = require('leaflet');
 	var corslite = require('corslite');
-  // to do: add POST
-  // var request = require('xhr-request');
 
 	// Ignore camelcase naming for this file, since OSRM's API uses
 	// underscores.
@@ -12,22 +16,14 @@
   require('leaflet-routing-machine');
 
   var profiles = require('./profiles.js');
-	/*
-	 Works against Esri's hosted routing service that supports
-   driving, trucking, walking
-   live and estimated traffic
-   up to 150 input stops
-   stop reordering (optimization)
-   localization
-	*/
+
 	module.exports = L.Class.extend({
-    // to do: start rounding response geometry to 5 decimal places
     options: {
-			// for now we're using a proxied url that makes it possible to route without a token
-			serviceUrl: 'http://utility.arcgis.com/usrsvcs/appservices/rdcfU1A3eVNshs0d/rest/services/World/Route/NAServer/Route_World',
+			// users can supply a proxied url instead of a token
+			serviceUrl: 'https://route.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
 			timeout: 30 * 1000,
 			routingOptions: {
-				profile: 'Driving Time',
+				profile: 'Driving',
         liveTraffic: true
 			}
 		},
@@ -70,7 +66,6 @@
 				wps.push(L.Routing.waypoint(wp.latLng, wp.name, wp.options));
 			}
 
-      // return xhr = request(url, { method: 'POST', body: params }, L.bind(function(err, resp) {
 			return xhr = corslite(url, L.bind(function(err, resp) {
 				var data,
 					error =  {};
@@ -147,7 +142,6 @@
 				totalTime: response.directions[0].summary.totalTime * 60
 			}
 
-			// route.name = 'Routing with Esri\'s hosted service'
 			response.routes.features[0]
 			route.inputWaypoints = inputWaypoints;
 			route.waypoints = actualWaypoints;
@@ -217,7 +211,8 @@
 				}
 			}
 
-			result.name = legNames.join(', ');
+      // ours service doesnt give stop coordinates real names in summary
+			result.name = ''; // legNames.join(', ');
 
 			return result;
 		},
@@ -346,11 +341,15 @@
       var completeServiceUrl = this.options.serviceUrl + '/solve?f=json&returnStops=true&directionsLengthUnits=esriNAUMeters&directionsOutputType=esriDOTComplete';
 
       if (this.options.liveTraffic) {
-        completeServiceUrl += '&startTimeisUTC=true&startTime=' + new Date().getTime()
+        completeServiceUrl += '&startTimeisUTC=true&startTime=' + new Date().getTime();
       }
 
       if (this.options.profile) {
-        completeServiceUrl += '&travelMode=' + profiles[this.options.profile]
+        completeServiceUrl += '&travelMode=' + profiles[this.options.profile];
+      }
+
+      if (this.options.token) {
+        completeServiceUrl += '&token=' + this.options.token;
       }
 
       completeServiceUrl += '&stops=' + locs.join(';');

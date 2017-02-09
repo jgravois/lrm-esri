@@ -6,24 +6,38 @@
 Check out the live [demo](http://jgravois.github.io/lrm-esri/examples/index.html).
 
 ### Usage
-<!-- place GIF here-->
+<!-- we need a GIF -->
 
 ```html
 <script src="./lrm-esri.js"></script>
 ```
 
 ```js
+/*
+additional profiles:
+Walking, Trucking, Rural Driving, Walking Distance, Trucking Distance, Driving Distance and Rural Driving Distance
+*/
 var control = L.Routing.control({
 	router: L.Routing.esri({
     liveTraffic: true,
-    /* also supports: Driving Distance,
-    Walking Time, Walking Distance,
-    Trucking Time, Trucking Distance
-    */
-    profile: 'Driving Time'
+    profile: 'Driving'
   })
 }).addTo(map);
 ```
+### Features
+
+Esri's hosted routing service can find the shortest driving, truck and walk time *or* distance for up to 150 input stops. It is able to incorporate both live and historic traffic and can reorder input stops to find the optimal sequence.
+
+### Authenticating
+
+* Embed credentials to allow anonymous routing ([live demo](https://johngravois.com/lrm-esri/examples/index.html))
+* Use OAuth2 to restrict routing to users with an ArcGIS Online account ([live demo](https://johngravois.com/lrm-esri/examples/oauth/index.html))
+
+### Terms
+
+1. Sign up for a [free developer account](https://developers.arcgis.com/).
+
+When credentials are embedded, requests are capped at 1250/month.  If you plan on monetizing your app, you **must** upgrade to a paid account.
 
 ### Development Instructions
 
@@ -56,6 +70,13 @@ Find a bug or want to request a new feature?  Please let us know by submitting a
 ### Contributing
 
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/esri-leaflet/blob/master/CONTRIBUTING.md).
+
+### Not implemented
+
+* barriers
+* route optimization
+* driving, trucking and walking *distance*
+* time windows
 
 ### Licensing
 Copyright 2017 Esri

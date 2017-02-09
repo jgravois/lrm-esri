@@ -11,7 +11,8 @@ var control = L.Routing.control({
 	],
 	router: L.Routing.esri({
     liveTraffic: true,
-    profile: 'Driving Time'
+    profile: 'Driving',
+    serviceUrl: 'https://utility.arcgis.com/usrsvcs/appservices/rdcfU1A3eVNshs0d/rest/services/World/Route/NAServer/Route_World'
   }),
 	geocoder: L.Control.Geocoder.nominatim(),
 	routeWhileDragging: true,
