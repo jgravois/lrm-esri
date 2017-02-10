@@ -48,5 +48,5 @@ signInButton.addEventListener('click', function(e){
   e.preventDefault();
 });
 
-var map = L.map('map');
-L.esri.basemapLayer('Gray').addTo(map);
+var map = L.map("map").setView([57.7, 11.9], 9);
+L.esri.basemapLayer('Topographic').addTo(map);

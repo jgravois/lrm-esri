@@ -6,7 +6,8 @@
 Check out the live [demo](http://jgravois.github.io/lrm-esri/examples/index.html).
 
 ### Usage
-<!-- we need a GIF -->
+
+![animation](animation.gif)
 
 ```html
 <script src="./lrm-esri.js"></script>
