@@ -31,8 +31,8 @@ Esri's hosted routing service can find the shortest driving, truck and walk time
 
 ### Authenticating
 
-* Embed credentials to allow anonymous routing ([live demo](https://johngravois.com/lrm-esri/examples/index.html))
-* Use OAuth2 to restrict routing to users with an ArcGIS Online account ([live demo](https://johngravois.com/lrm-esri/examples/oauth/index.html))
+* Embed credentials to allow anonymous routing
+* Use [OAuth2](https://developers.arcgis.com/authentication/) to restrict routing to users with an ArcGIS account - [live demo](https://johngravois.com/lrm-esri/examples/oauth/index.html)
 
 ### Terms
 
@@ -42,7 +42,7 @@ When credentials are embedded, requests are capped at 1250/month.  If you plan o
 
 ### Development Instructions
 
-If you'd like to inspect and modify the source of lrm-esri, follow the instructions below to set up a local development environment.
+If you'd like to inspect and modify the source code, follow the instructions below to set up a local development environment.
 
 1. [Fork and clone](https://help.github.com/articles/fork-a-repo)
 2. `cd` into the `lrm-esri` folder
@@ -53,11 +53,10 @@ If you'd like to inspect and modify the source of lrm-esri, follow the instructi
 
 ### Dependencies
 
-* `leaflet`
-* `leaflet-routing-machine`
-* `cors-lite`
-
-this plugin does *not* depend on [Esri Leaflet](https://esri.github.io/esri-leaflet).
+* leaflet
+* leaflet-routing-machine
+* cors-lite
+* ~~esri-leaflet~~
 
 ### Resources
 
@@ -72,7 +71,9 @@ Find a bug or want to request a new feature?  Please let us know by submitting a
 
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/esri-leaflet/blob/master/CONTRIBUTING.md).
 
-### Not implemented
+### Caveats
+
+Many Esri routing service features have *not* been implemented
 
 * barriers
 * route optimization
