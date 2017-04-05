@@ -38,7 +38,7 @@ Esri's hosted routing service can find the shortest driving, truck and walk time
 
 1. Sign up for a [free developer account](https://developers.arcgis.com/).
 
-When credentials are embedded, requests are capped at 1250/month.  If you plan on monetizing your app, you **must** upgrade to a paid account.
+When credentials are embedded, requests for free accounts are capped at 1250/month.  If you plan on monetizing your app, you **must** upgrade to a paid account.
 
 ### Development Instructions
 
