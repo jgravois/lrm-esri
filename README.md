@@ -29,16 +29,42 @@ var control = L.Routing.control({
 
 Esri's hosted routing service can find the shortest driving, truck and walk time *or* distance for up to 150 input stops. It is able to incorporate both live and historic traffic and can reorder input stops to find the optimal sequence.
 
-### Authenticating
+## Authentication
 
-* Embed credentials to allow anonymous routing
-* Use [OAuth2](https://developers.arcgis.com/authentication/) to restrict routing to users with an ArcGIS account - [live demo](https://johngravois.com/lrm-esri/examples/oauth/index.html)
+### Use a proxied service
 
-### Terms
+You can allow anonymous users to get directions in your application by leveraging a proxied service - [live demo](http://jgravois.github.io/lrm-esri/examples/index.html)
 
-1. Sign up for a [free developer account](https://developers.arcgis.com/).
+1. Sign up for a [free developer account](https://developers.arcgis.com/)
+2. Create your own [proxied service url](https://developers.arcgis.com/authentication/working-with-proxies/#arcgis-online-hosted-proxy)
+3. supply the `url` in the provider constructor
 
-When credentials are embedded, requests for free accounts are capped at 1250/month.  If you plan on monetizing your app, you **must** upgrade to a paid account.
+```js
+var control = L.Routing.control({
+  router: L.Routing.esri({
+    url: '<your proxied service url>'
+  })
+}).addTo(map);
+```
+
+When credentials are embedded, 1250 requests/month are provided for free. [Deployment packs](https://developers.arcgis.com/credits/) are available to help you scale.
+
+### Use OAuth2
+
+You can also use [OAuth2](https://developers.arcgis.com/authentication/) and bill routing charges directly to existing ArcGIS users - [live demo](https://johngravois.com/lrm-esri/examples/oauth/index.html)
+
+1. Sign up for a [free developer account](https://developers.arcgis.com/)
+2. Create and register a new application
+3. Reference your `clientID` in your app and configure a `redirectUri`
+4. after the user signs in, supply their `token` in the provider constructor (more info [here](https://developers.arcgis.com/authentication/browser-based-user-logins/))
+
+```js
+var control = L.Routing.control({
+  router: L.Routing.esri({
+    token: '<user token>'
+  })
+}).addTo(map);
+```
 
 ### Development Instructions
 
@@ -79,6 +105,7 @@ Many Esri routing service features have *not* been implemented
 * route optimization
 * driving, trucking and walking *distance*
 * time windows
+* routing for emergency vehicles
 
 ### Licensing
 Copyright 2017 Esri
@@ -96,6 +123,3 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 A copy of the license is available in the repository's [LICENSE](./LICENSE) file.
-
-[](Esri Tags: ArcGIS Web Mapping Leaflet)
-[](Esri Language: JavaScript)
