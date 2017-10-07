@@ -1,33 +1,89 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Esri Leaflet Routing</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.5/dist/leaflet-routing-machine.css" />
-    <style>
-    html { font-family: sans-serif; font-size: 11pt; }
-    .map { position: fixed; top: 0; left: 0; right: 0; bottom: 0; }
+  <html>
+  <head>
+    <meta charset=utf-8 />
+    <title>Esri Leaflet Debugging Sample</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-    .results {
-        background-color: white;
-        opacity: 0.8;
+    <!-- Load Leaflet from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+    integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+    crossorigin=""></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@2.1.1/dist/esri-leaflet.js"
+    integrity="sha512-ECQqaYZke9cSdqlFG08zSkudgrdF6I1d8ViSa7I3VIszJyVqw4ng1G8sehEXlumdMnFYfzY0tMgdQa4WCs9IUw=="
+    crossorigin=""></script>
+
+    <style>
+      body {
+        margin:0;
+        padding:0;
+      }
+
+      #map {
         position: absolute;
-        top: 12px;
-        right: 12px;
-        width: 320px;
-        height: 480px;
-        overflow-y: scroll;
-    }
+        top:0;
+        bottom:0;
+        right:0;left:0;
+      }
+
+      #info-pane {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        padding: 1em;
+        background: white;
+      }
     </style>
-</head>
-<body>
-    <div id="map" class="map"></div>
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-routing-machine@3.2.5"></script>
-    <script src="https://unpkg.com/leaflet-control-geocoder@1.5.4"></script>
-    <script src="../dist/lrm-esri.js"></script>
-    <script src="vancouver.js"></script>
-</body>
-</html>
+  </head>
+  <body>
+
+  <div id="map"></div>
+  <div id="info-pane" class="leaflet-bar">
+    <label>
+    blue: <code>Height Restriction</code> 2.0<br>
+    red: <code>Height Restriction</code> 6.0
+    </label>
+  </div>
+
+  <script>
+    var map = L.map('map').setView([49.275, -123.038], 14)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const url = 'https://utility.arcgis.com/usrsvcs/appservices/rdcfU1A3eVNshs0d/rest/services/World/Route/NAServer/Route_World/solve'
+
+    L.esri.request(url, {
+      stops: "-123.02370071411134,49.2465174481908;-123.02777767181398,49.30967971114186",
+      restrictionAttributeNames: "Driving an Automobile, Height Restriction",
+      attributeParameterValues:`[{
+        'attributeName': 'Height Restriction',
+        'parameterName': 'Vehicle Height (meters)',
+        'value': 2.0
+      }]`
+    }, function (error, response) {
+      const route = L.esri.Util.arcgisToGeoJSON(response.routes.features[0].geometry)
+      L.geoJSON(route).addTo(map)
+    })
+
+    L.esri.request(url, {
+      stops: "-123.02370071411134,49.2465174481908;-123.02777767181398,49.30967971114186",
+      restrictionAttributeNames: "Driving an Automobile, Height Restriction",
+      attributeParameterValues:`[{
+        'attributeName': 'Height Restriction',
+        'parameterName': 'Vehicle Height (meters)',
+        'value': 6.0
+      }]`
+    }, function (error, response) {
+      const route = L.esri.Util.arcgisToGeoJSON(response.routes.features[0].geometry)
+      L.geoJSON(route, { color: 'red' }).addTo(map)
+    })
+  </script>
+  </body>
+  </html>
