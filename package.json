@@ -20,6 +20,9 @@
     "esri-leaflet"
   ],
   "author": "john gravois",
+  "browser": {
+    "request": "xhr"
+  },
   "license": "Apache-2.0",
   "browserify-shim": {
     "leaflet": "global:L",
@@ -35,6 +38,6 @@
     "watch": "^1.0.1"
   },
   "dependencies": {
-    "corslite": "0.0.7"
+    "xhr": "^2.5.0"
   }
 }
