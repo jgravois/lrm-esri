@@ -8,8 +8,8 @@ round response geometry to 5 decimal places
 	'use strict';
 
 	var L = require('leaflet');
-	var corslite = require('corslite');
-
+	var xhr = require('xhr');
+	
 	// Ignore camelcase naming for this file, since OSRM's API uses
 	// underscores.
 	/* jshint camelcase: false */
@@ -24,7 +24,7 @@ round response geometry to 5 decimal places
 			timeout: 30 * 1000,
 			routingOptions: {
 				profile: 'Driving',
-        liveTraffic: true
+                liveTraffic: true
 			}
 		},
 
@@ -42,10 +42,13 @@ round response geometry to 5 decimal places
 				timer,
 				wp,
 				i,
-				xhr;
+				body
+				// xhr;
 
 			options = L.extend({}, this.options.routingOptions, options);
-			url = this.buildRouteUrl(waypoints, options);
+			url = this.options.serviceUrl + '/solve';
+			
+			body = this.buildRouteUrl(waypoints, options);
 			if (this.options.requestParameters) {
 				url += L.Util.getParamString(this.options.requestParameters, url);
 			}
@@ -66,7 +69,14 @@ round response geometry to 5 decimal places
 				wps.push(L.Routing.waypoint(wp.latLng, wp.name, wp.options));
 			}
 
-			return xhr = corslite(url, L.bind(function(err, resp) {
+			return xhr({
+			  method: "post",
+			  uri: url,
+			  body: body,
+			  headers: {
+			    "Content-Type": "application/x-www-form-urlencoded"
+			  }
+			}, L.bind(function(err, resp) {
 				var data,
 					error =  {};
 
@@ -74,7 +84,7 @@ round response geometry to 5 decimal places
 				if (!timedOut) {
 					if (!err) {
 						try {
-							data = JSON.parse(resp.responseText);
+							data = JSON.parse(resp.body);
 							try {
 								return this._routeDone(data, wps, options, callback, context);
 							} catch (ex) {
@@ -94,8 +104,6 @@ round response geometry to 5 decimal places
 					}
 
 					callback.call(context || callback, error);
-				} else {
-					xhr.abort();
 				}
 			}, this));
 		},
@@ -338,40 +346,29 @@ round response geometry to 5 decimal places
 			}
 
 			// computeInstructions = true;
-      var completeServiceUrl = this.options.serviceUrl + '/solve?f=json&returnStops=true&directionsLengthUnits=esriNAUMeters&directionsOutputType=esriDOTComplete';
+			// var completeServiceUrl = this.options.serviceUrl + '/solve';
 
-      if (this.options.liveTraffic) {
-        completeServiceUrl += '&startTimeisUTC=true&startTime=' + new Date().getTime();
-      }
+			var params = "f=json";
+			params += "&returnStops=true";
+			params += "&directionsLengthUnits=esriNAUMeters";
+			params += "&directionsOutputType=esriDOTComplete";
 
-      if (this.options.profile) {
-        completeServiceUrl += '&travelMode=' + profiles[this.options.profile];
-	  }
+			if (this.options.liveTraffic) {
+				params += "&startTimeisUTC=true";
+				params += "&startTime=" + new Date().getTime();
+			}
 
-      if (this.options.token) {
-        completeServiceUrl += '&token=' + this.options.token;
-      }
+			if (this.options.profile) {
+				params += "&travelMode=" + profiles[this.options.profile];
+			}
 
-      completeServiceUrl += '&stops=' + locs.join(';');
+			if (this.options.token) {
+				params += "&token=" + this.options.token;
+			}
 
-      return completeServiceUrl;
+			params += "&stops=" + locs.join(';');
 
-      // var params = {
-      //   f: 'json',
-      //   returnStops: true,
-      //   directionsLengthUnits: 'esriNAUMeters',
-      //   directionsOutputType: 'esriDOTComplete'
-      // };
-      //
-      // if (this.options.liveTraffic) {
-      //   params.startTimeisUTC = true
-      //   params.startTime = new Date().getTime()
-      // }
-      //
-      // params.travelMode = profiles[this.options.profile]
-      // params.stops = locs.join(';');
-      //
-      // return params;
+			return params;
 		},
 
 		_locationKey: function(location) {
