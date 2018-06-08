@@ -346,11 +346,7 @@ round response geometry to 5 decimal places
 
       if (this.options.profile) {
         completeServiceUrl += '&travelMode=' + profiles[this.options.profile];
-			}
-
-			if (this.options.vehicleHeight) {
-				completeServiceUrl += "&restrictionAttributeNames=Height Restriction&attributeParameterValues=[{'attributeName': 'Height Restriction','parameterName': 'Vehicle Height (meters)','value': " + this.options.vehicleHeight + '}]';
-			}
+	  }
 
       if (this.options.token) {
         completeServiceUrl += '&token=' + this.options.token;
